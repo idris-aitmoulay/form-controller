@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import Controller from "./controllers/Controller";
 import fields from "./controllers";
+import { InputChangeEvent } from "./controllers/utils";
 const CONTROLLED_FIELD = ['text', 'radio', 'number'];
 
 function getControlledElements(elements: HTMLFormControlsCollection): HTMLInputElement[] {
@@ -13,6 +14,7 @@ function useFormControl() {
   const fieldsController = useRef<Record<string, Controller>>({});
   const formRef = useRef<Record<string, HTMLElement | null>>({});
   const [errorsMessage, setErrorsMessage] = useState({});
+  const [formState, setFormState] = useState({});
 
   const updateErrorMessage =  useCallback(() => {
     setErrorsMessage(prev => {
@@ -43,8 +45,11 @@ function useFormControl() {
   const registerForm = useCallback((form: HTMLFormElement | null) => {
     if (!form) return;
     formRef.current = { form };
-    function registerEvent(dt: any) {
-      console.warn('useFormControl', dt)
+    function registerEvent(dt: InputChangeEvent) {
+      const { name, errors, value} = dt;
+      setErrorsMessage( prev => ({ ...prev, [name]: errors }));
+      setFormState(prev => ({ ...prev, [name]: value }));
+
     }
 
     const elements = (form?.elements || {}) as HTMLFormControlsCollection;
@@ -74,7 +79,8 @@ function useFormControl() {
   }, [])
   return {
     registerForm,
-    errorsMessage
+    errorsMessage,
+    formState,
   }
 }
 

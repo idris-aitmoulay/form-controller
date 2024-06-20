@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { ValidationError } from "./utils";
+import {InputChangeEvent, ValidationError} from "./utils";
 
 class Controller extends EventEmitter {
   rawConfig: HTMLInputElement;
@@ -38,7 +38,7 @@ class Controller extends EventEmitter {
   }
 
   handleChange(value: any, errors?:ValidationError[]) {
-    this.emit('change', { name: this.name, value, errors });
+    this.emit('change', { name: this.name, value, errors } as InputChangeEvent);
   }
 
   unregisterEventListener() {

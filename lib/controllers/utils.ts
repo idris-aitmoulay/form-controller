@@ -3,3 +3,9 @@ export interface ValidationError {
   field: string;
   type: string;
 }
+
+export interface InputChangeEvent {
+  name: string;
+  value: string;
+  errors: ValidationError[];
+}

@@ -4,7 +4,7 @@ import useFormControl from "../../lib/useFormControl";
 
 
 function AllFieldTypesForm() {
-  const { registerForm } = useFormControl();
+  const { registerForm, errorsMessage, formState } = useFormControl();
   return(
     <form ref={ref => registerForm(ref)}>
       <fieldset>
